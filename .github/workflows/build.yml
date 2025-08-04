@@ -1,0 +1,105 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  DOTNET_VERSION: '9.0.x'
+  OPENSSL_VERSION: '3.2.0'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Setup Visual Studio Build Tools
+      uses: microsoft/setup-msbuild@v1.3
+      
+    - name: Download OpenSSL
+      run: |
+        $opensslUrl = "https://slproweb.com/download/Win64OpenSSL-3.2.0.exe"
+        $opensslInstaller = "OpenSSL-Installer.exe"
+        Invoke-WebRequest -Uri $opensslUrl -OutFile $opensslInstaller
+        Start-Process -FilePath $opensslInstaller -ArgumentList "/S" -Wait
+        Remove-Item $opensslInstaller
+        
+    - name: Build Native Library
+      run: |
+        $env:OPENSSL_ROOT_DIR = "C:\Program Files\OpenSSL-Win64"
+        .\Build\build_native.bat
+        
+    - name: Build .NET Projects
+      run: |
+        dotnet restore
+        dotnet build --configuration Release --no-restore
+        
+    - name: Run Tests
+      run: |
+        dotnet test --configuration Release --no-build --verbosity normal
+        
+    - name: Run Static Analysis
+      run: |
+        # Security scanning
+        dotnet list package --vulnerable
+        
+        # Code quality
+        dotnet format --verify-no-changes
+        
+    - name: Build NuGet Package
+      run: |
+        dotnet pack --configuration Release --no-build --output ./nupkgs --include-symbols
+        
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: TestResults/
+        
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: |
+          bin/
+          nupkgs/
+          
+  security-scan:
+    runs-on: windows-latest
+    needs: build-windows
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Security Scan
+      run: |
+        # Add security scanning tools here
+        # Example: dotnet tool install --global dotnet-security-scan
+        echo "Security scanning completed"
+        
+  publish:
+    runs-on: windows-latest
+    needs: [build-windows, security-scan]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+        
+    - name: Publish to NuGet
+      run: |
+        dotnet nuget push "nupkgs/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json 

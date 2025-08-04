@@ -1,0 +1,54 @@
+# Build outputs
+bin/
+obj/
+*.dll
+*.lib
+*.exp
+*.obj
+*.pdb
+*.nupkg
+*.snupkg
+nupkgs/
+
+# OpenSSL-Win64 - exclude everything except essential files
+OpenSSL-Win64/*
+!OpenSSL-Win64/include/
+!OpenSSL-Win64/include/openssl/
+!OpenSSL-Win64/lib/
+!OpenSSL-Win64/lib/VC/
+!OpenSSL-Win64/lib/VC/x64/
+!OpenSSL-Win64/lib/VC/x64/MD/
+!OpenSSL-Win64/lib/VC/x64/MD/libcrypto.lib
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.cache
+
+# .NET
+*.dll
+*.exe
+*.pdb
+*.log
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test results
+TestResults/
+*.coverage
+*.coveragexml 

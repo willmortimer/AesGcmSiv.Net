@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AesGcmSiv.Net</name>
+    </assembly>
+    <members>
+        <member name="T:System.Security.Cryptography.AesGcmSiv">
+            <summary>
+            Provides AES-GCM-SIV (Galois/Counter Mode with Synthetic Initialization Vector) authenticated encryption.
+            This implementation provides misuse resistance through deterministic encryption.
+            </summary>
+            <remarks>
+            AES-GCM-SIV is a deterministic authenticated encryption mode that provides protection against
+            nonce reuse attacks. Unlike standard AES-GCM, reusing a nonce with the same key will not
+            lead to security failures, though it will reveal that the same plaintext was encrypted.
+            
+            Key requirements:
+            - Must be exactly 32 bytes (256 bits)
+            - Should be generated using a cryptographically secure random number generator
+            
+            Nonce requirements:
+            - Must be exactly 12 bytes (96 bits)
+            - Can be random or structured (e.g., user ID + counter)
+            - Nonce reuse is safe but reveals message duplication
+            </remarks>
+        </member>
+        <member name="M:System.Security.Cryptography.AesGcmSiv.#ctor(System.Byte[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Security.Cryptography.AesGcmSiv"/> class with the specified key.
+            </summary>
+            <param name="key">The encryption key. Must be exactly 32 bytes (256 bits).</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="key"/> is not exactly 32 bytes.</exception>
+        </member>
+        <member name="M:System.Security.Cryptography.AesGcmSiv.Encrypt(System.Byte[],System.Byte[],System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Encrypts plaintext using AES-GCM-SIV.
+            </summary>
+            <param name="nonce">The nonce. Must be exactly 12 bytes (96 bits).</param>
+            <param name="plaintext">The plaintext to encrypt.</param>
+            <param name="ciphertext">The output buffer for the ciphertext. Must be at least as large as the plaintext.</param>
+            <param name="tag">The output buffer for the authentication tag. Must be at least 16 bytes.</param>
+            <param name="associatedData">Optional additional authenticated data.</param>
+            <exception cref="T:System.ObjectDisposedException">The object has been disposed.</exception>
+            <exception cref="T:System.ArgumentNullException">Any required parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">Parameter sizes are invalid.</exception>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Encryption failed.</exception>
+        </member>
+        <member name="M:System.Security.Cryptography.AesGcmSiv.Decrypt(System.Byte[],System.Byte[],System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Decrypts ciphertext using AES-GCM-SIV.
+            </summary>
+            <param name="nonce">The nonce used during encryption. Must be exactly 12 bytes (96 bits).</param>
+            <param name="ciphertext">The ciphertext to decrypt.</param>
+            <param name="tag">The authentication tag. Must be exactly 16 bytes.</param>
+            <param name="plaintext">The output buffer for the plaintext. Must be at least as large as the ciphertext.</param>
+            <param name="associatedData">Optional additional authenticated data (must match the data used during encryption).</param>
+            <exception cref="T:System.ObjectDisposedException">The object has been disposed.</exception>
+            <exception cref="T:System.ArgumentNullException">Any required parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">Parameter sizes are invalid.</exception>
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Decryption failed or authentication tag is invalid.</exception>
+        </member>
+        <member name="M:System.Security.Cryptography.AesGcmSiv.Dispose">
+            <summary>
+            Releases all resources used by the current instance of the <see cref="T:System.Security.Cryptography.AesGcmSiv"/> class.
+            </summary>
+        </member>
+    </members>
+</doc>

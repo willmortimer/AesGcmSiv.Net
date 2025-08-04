@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>AesGcmSiv.Net</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>AES-GCM-SIV Team</Authors>
+    <Description>Production-grade AES-GCM-SIV implementation for .NET</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>cryptography;encryption;aes;gcm;siv;security</PackageTags>
+    <PackageProjectUrl>https://github.com/yourusername/AesGcmSiv.Net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yourusername/AesGcmSiv.Net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <!-- Icon removed for now - can be added later -->
+    <PackageIconUrl></PackageIconUrl>
+    <PackageReleaseNotes>Initial release with AES-GCM-SIV implementation</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\bin\native\win-x64\aesgcmsiv.dll" Pack="true" PackagePath="runtimes\win-x64\native\" />
+  </ItemGroup>
+
+</Project>
