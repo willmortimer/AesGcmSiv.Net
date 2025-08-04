@@ -51,46 +51,11 @@ jobs:
         
     - name: Build Native Library
       run: |
-        # Use Developer Command Prompt to build native library
-        Write-Host "Building native library with Developer Command Prompt..."
+        # Use the GitHub Actions specific build script
+        Write-Host "Building native library for GitHub Actions..."
         
-        # OpenSSL path set via environment variable
-        Write-Host "Using OpenSSL from repository: $env:OPENSSL_ROOT_DIR"
-        Write-Host "OpenSSL DLLs should be available in PATH"
-        
-        # Find Visual Studio installation and vcvars64.bat
-        Write-Host "Looking for Visual Studio installations..."
-        $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
-        Write-Host "Visual Studio found at: $vsPath"
-        
-        # Try different possible paths for vcvars64.bat
-        $vcvarsPaths = @(
-          "$vsPath\VC\Auxiliary\Build\vcvars64.bat",
-          "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat",
-          "C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat",
-          "C:\Program Files (x86)\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build\vcvars64.bat",
-          "C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        )
-        
-        $vcvarsPath = $null
-        foreach ($path in $vcvarsPaths) {
-          if (Test-Path $path) {
-            $vcvarsPath = $path
-            Write-Host "Found vcvars64.bat at: $vcvarsPath"
-            break
-          }
-        }
-        
-        if (-not $vcvarsPath) {
-          Write-Error "vcvars64.bat not found in any expected location"
-          Write-Host "Available Visual Studio installations:"
-          & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -all -property installationPath
-          exit 1
-        }
-        
-        # Run the build script using Developer Command Prompt
-        Write-Host "Running build with: $vcvarsPath"
-        cmd /c "`"$vcvarsPath`" && cd /d `"$PWD`" && .\Build\build_native.bat"
+        # Run the GitHub Actions build script
+        .\Build\build_native_github_actions.bat
         
         if ($LASTEXITCODE -ne 0) {
           Write-Error "Native library build failed"
@@ -116,9 +81,9 @@ jobs:
             Copy-Item "bin\native\win-x64\aesgcmsiv.dll" $dir -Force
             Write-Host "Copied aesgcmsiv.dll to: $dir"
             
-            # Copy OpenSSL DLLs for runtime
-            Copy-Item "$env:OPENSSL_ROOT_DIR\libcrypto-3-x64.dll" $dir -Force
-            Copy-Item "$env:OPENSSL_ROOT_DIR\libssl-3-x64.dll" $dir -Force
+            # Copy OpenSSL DLLs for runtime using hardcoded paths
+            Copy-Item "OpenSSL-Win64\libcrypto-3-x64.dll" $dir -Force
+            Copy-Item "OpenSSL-Win64\libssl-3-x64.dll" $dir -Force
             Write-Host "Copied OpenSSL DLLs to: $dir"
           } else {
             Write-Host "Test directory not found: $dir"
