@@ -70,6 +70,16 @@ jobs:
     - name: Copy Native DLL and OpenSSL DLLs to Test Directories
       run: |
         # Copy the native DLL and OpenSSL DLLs to the test output directories
+        Write-Host "Current working directory: $PWD"
+        Write-Host "Checking if OpenSSL DLLs exist..."
+        if (Test-Path "OpenSSL-Win64\libcrypto-3-x64.dll") {
+          Write-Host "OpenSSL DLLs found"
+        } else {
+          Write-Host "OpenSSL DLLs not found in current directory"
+          Write-Host "Listing OpenSSL-Win64 directory:"
+          Get-ChildItem "OpenSSL-Win64" -ErrorAction SilentlyContinue
+        }
+        
         $testDirs = @(
           "AesGcmSiv.Tests\bin\Release\net9.0",
           "AesGcmSiv.Tests\bin\Debug\net9.0"
