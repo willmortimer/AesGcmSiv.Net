@@ -15,8 +15,7 @@
             <PackageProjectUrl>https://github.com/willmortimer/AesGcmSiv.Net</PackageProjectUrl>
         <RepositoryUrl>https://github.com/willmortimer/AesGcmSiv.Net</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <!-- Icon removed for now - can be added later -->
-    <PackageIconUrl></PackageIconUrl>
+    <PackageIcon>logo\aes-gcm-siv-logo.png</PackageIcon>
     <PackageReleaseNotes>Initial release with AES-GCM-SIV implementation</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -26,6 +25,7 @@
 
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="/" />
+    <None Include="..\logo\aes-gcm-siv-logo.png" Pack="true" PackagePath="logo\" />
   </ItemGroup>
 
   <ItemGroup>

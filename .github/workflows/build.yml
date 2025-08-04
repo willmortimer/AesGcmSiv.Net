@@ -36,6 +36,13 @@ jobs:
         Write-Host "Using OpenSSL files from repository..."
         if (Test-Path "OpenSSL-Win64") {
           Write-Host "OpenSSL-Win64 directory found in repository"
+          
+          # Set environment variables to use repository OpenSSL
+          $env:OPENSSL_ROOT_DIR = "$PWD\OpenSSL-Win64"
+          $env:PATH = "$PWD\OpenSSL-Win64;$env:PATH"
+          
+          Write-Host "OpenSSL_ROOT_DIR set to: $env:OPENSSL_ROOT_DIR"
+          Write-Host "OpenSSL DLLs available at: $PWD\OpenSSL-Win64"
         } else {
           Write-Error "OpenSSL-Win64 directory not found in repository"
           exit 1
@@ -46,9 +53,8 @@ jobs:
         # Use Developer Command Prompt to build native library
         Write-Host "Building native library with Developer Command Prompt..."
         
-        # Set OpenSSL path
-        $env:OPENSSL_ROOT_DIR = "$PWD\OpenSSL-Win64"
-        Write-Host "OpenSSL path: $env:OPENSSL_ROOT_DIR"
+        # OpenSSL path already set in previous step
+        Write-Host "Using OpenSSL from repository: $env:OPENSSL_ROOT_DIR"
         
         # Find Visual Studio installation and vcvars64.bat
         Write-Host "Looking for Visual Studio installations..."
@@ -94,9 +100,9 @@ jobs:
         dotnet restore
         dotnet build --configuration Release --no-restore
         
-    - name: Copy Native DLL to Test Directories
+    - name: Copy Native DLL and OpenSSL DLLs to Test Directories
       run: |
-        # Copy the native DLL to the test output directories
+        # Copy the native DLL and OpenSSL DLLs to the test output directories
         $testDirs = @(
           "AesGcmSiv.Tests\bin\Release\net9.0",
           "AesGcmSiv.Tests\bin\Debug\net9.0"
@@ -104,8 +110,14 @@ jobs:
         
         foreach ($dir in $testDirs) {
           if (Test-Path $dir) {
+            # Copy native DLL
             Copy-Item "bin\native\win-x64\aesgcmsiv.dll" $dir -Force
-            Write-Host "Copied DLL to: $dir"
+            Write-Host "Copied aesgcmsiv.dll to: $dir"
+            
+            # Copy OpenSSL DLLs for runtime
+            Copy-Item "OpenSSL-Win64\libcrypto-3-x64.dll" $dir -Force
+            Copy-Item "OpenSSL-Win64\libssl-3-x64.dll" $dir -Force
+            Write-Host "Copied OpenSSL DLLs to: $dir"
           } else {
             Write-Host "Test directory not found: $dir"
           }
