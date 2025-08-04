@@ -121,6 +121,31 @@ jobs:
         
 
         
+    - name: Debug Before Upload
+      run: |
+        Write-Host "Checking what will be uploaded..."
+        Write-Host "Current working directory: $PWD"
+        
+        Write-Host "Checking bin directory:"
+        if (Test-Path "bin") {
+          Write-Host "bin directory exists"
+          Get-ChildItem "bin" -Recurse -Force | ForEach-Object {
+            Write-Host "  Found file: $($_.FullName) ($($_.Length) bytes)"
+          }
+        } else {
+          Write-Host "bin directory does not exist"
+        }
+        
+        Write-Host "Checking nupkgs directory:"
+        if (Test-Path "nupkgs") {
+          Write-Host "nupkgs directory exists"
+          Get-ChildItem "nupkgs" -Force | ForEach-Object {
+            Write-Host "  Found file: $($_.Name) ($($_.Length) bytes)"
+          }
+        } else {
+          Write-Host "nupkgs directory does not exist"
+        }
+        
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -153,6 +178,34 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: build-artifacts
+        
+    - name: Debug Downloaded Artifacts
+      run: |
+        Write-Host "Current working directory: $PWD"
+        Write-Host "Listing all files in current directory:"
+        Get-ChildItem -Force | ForEach-Object {
+          Write-Host "  $($_.Mode) $($_.Length) $($_.Name)"
+        }
+        
+        Write-Host "Checking for nupkgs directory:"
+        if (Test-Path "nupkgs") {
+          Write-Host "nupkgs directory exists"
+          Get-ChildItem "nupkgs" -Force | ForEach-Object {
+            Write-Host "  Found file: $($_.Name) ($($_.Length) bytes)"
+          }
+        } else {
+          Write-Host "nupkgs directory does not exist"
+        }
+        
+        Write-Host "Checking for bin directory:"
+        if (Test-Path "bin") {
+          Write-Host "bin directory exists"
+          Get-ChildItem "bin" -Recurse -Force | ForEach-Object {
+            Write-Host "  Found file: $($_.FullName) ($($_.Length) bytes)"
+          }
+        } else {
+          Write-Host "bin directory does not exist"
+        }
         
     - name: Publish to NuGet
       run: |
