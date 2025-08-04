@@ -108,12 +108,7 @@ jobs:
       run: |
         dotnet pack --configuration Release --no-build --output ./nupkgs --include-symbols
         
-    - name: Upload Test Results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: test-results
-        path: TestResults/
+
         
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
