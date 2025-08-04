@@ -70,30 +70,7 @@ jobs:
     - name: Copy Native DLL and OpenSSL DLLs to Test Directories
       run: |
         # Copy the native DLL and OpenSSL DLLs to the test output directories
-        Write-Host "Current working directory: $PWD"
-        Write-Host "Checking if OpenSSL DLLs exist..."
-        
-        # Check with relative path
-        $relativePath = "OpenSSL-Win64\libcrypto-3-x64.dll"
-        Write-Host "Checking relative path: $relativePath"
-        Write-Host "Relative path exists: $(Test-Path $relativePath)"
-        
-        # Check with absolute path
-        $absolutePath = "$PWD\OpenSSL-Win64\libcrypto-3-x64.dll"
-        Write-Host "Checking absolute path: $absolutePath"
-        Write-Host "Absolute path exists: $(Test-Path $absolutePath)"
-        
-        # List all files in OpenSSL directory
-        Write-Host "Listing OpenSSL-Win64 directory (all files):"
-        Get-ChildItem "OpenSSL-Win64" -Force -ErrorAction SilentlyContinue | ForEach-Object {
-          Write-Host "  $($_.Mode) $($_.Length) $($_.Name)"
-        }
-        
-        if (Test-Path $absolutePath) {
-          Write-Host "OpenSSL DLLs found using absolute path"
-        } else {
-          Write-Host "OpenSSL DLLs not found even with absolute path"
-        }
+        Write-Host "Copying native DLL and OpenSSL DLLs to test directories..."
         
         $testDirs = @(
           "AesGcmSiv.Tests\bin\Release\net9.0",
