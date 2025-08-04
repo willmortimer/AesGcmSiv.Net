@@ -72,12 +72,27 @@ jobs:
         # Copy the native DLL and OpenSSL DLLs to the test output directories
         Write-Host "Current working directory: $PWD"
         Write-Host "Checking if OpenSSL DLLs exist..."
-        if (Test-Path "OpenSSL-Win64\libcrypto-3-x64.dll") {
-          Write-Host "OpenSSL DLLs found"
+        
+        # Check with relative path
+        $relativePath = "OpenSSL-Win64\libcrypto-3-x64.dll"
+        Write-Host "Checking relative path: $relativePath"
+        Write-Host "Relative path exists: $(Test-Path $relativePath)"
+        
+        # Check with absolute path
+        $absolutePath = "$PWD\OpenSSL-Win64\libcrypto-3-x64.dll"
+        Write-Host "Checking absolute path: $absolutePath"
+        Write-Host "Absolute path exists: $(Test-Path $absolutePath)"
+        
+        # List all files in OpenSSL directory
+        Write-Host "Listing OpenSSL-Win64 directory (all files):"
+        Get-ChildItem "OpenSSL-Win64" -Force -ErrorAction SilentlyContinue | ForEach-Object {
+          Write-Host "  $($_.Mode) $($_.Length) $($_.Name)"
+        }
+        
+        if (Test-Path $absolutePath) {
+          Write-Host "OpenSSL DLLs found using absolute path"
         } else {
-          Write-Host "OpenSSL DLLs not found in current directory"
-          Write-Host "Listing OpenSSL-Win64 directory:"
-          Get-ChildItem "OpenSSL-Win64" -ErrorAction SilentlyContinue
+          Write-Host "OpenSSL DLLs not found even with absolute path"
         }
         
         $testDirs = @(
@@ -91,9 +106,10 @@ jobs:
             Copy-Item "bin\native\win-x64\aesgcmsiv.dll" $dir -Force
             Write-Host "Copied aesgcmsiv.dll to: $dir"
             
-            # Copy OpenSSL DLLs for runtime using hardcoded paths
-            Copy-Item "OpenSSL-Win64\libcrypto-3-x64.dll" $dir -Force
-            Copy-Item "OpenSSL-Win64\libssl-3-x64.dll" $dir -Force
+            # Copy OpenSSL DLLs for runtime using absolute paths
+            $opensslPath = "$PWD\OpenSSL-Win64"
+            Copy-Item "$opensslPath\libcrypto-3-x64.dll" $dir -Force
+            Copy-Item "$opensslPath\libssl-3-x64.dll" $dir -Force
             Write-Host "Copied OpenSSL DLLs to: $dir"
           } else {
             Write-Host "Test directory not found: $dir"
