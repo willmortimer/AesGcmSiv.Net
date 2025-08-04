@@ -89,14 +89,31 @@ jobs:
           exit 1
         }
         
-    - name: Build .NET Projects
-      run: |
-        dotnet restore
-        dotnet build --configuration Release --no-restore
-        
-    - name: Run Tests
-      run: |
-        dotnet test --configuration Release --no-build --verbosity normal
+               - name: Build .NET Projects
+             run: |
+               dotnet restore
+               dotnet build --configuration Release --no-restore
+               
+           - name: Copy Native DLL to Test Directories
+             run: |
+               # Copy the native DLL to the test output directories
+               $testDirs = @(
+                 "AesGcmSiv.Tests\bin\Release\net9.0",
+                 "AesGcmSiv.Tests\bin\Debug\net9.0"
+               )
+               
+               foreach ($dir in $testDirs) {
+                 if (Test-Path $dir) {
+                   Copy-Item "bin\native\win-x64\aesgcmsiv.dll" $dir -Force
+                   Write-Host "Copied DLL to: $dir"
+                 } else {
+                   Write-Host "Test directory not found: $dir"
+                 }
+               }
+               
+           - name: Run Tests
+             run: |
+               dotnet test --configuration Release --no-build --verbosity normal
         
     - name: Run Static Analysis
       run: |
