@@ -3,8 +3,14 @@ using Xunit;
 
 namespace AesGcmSiv.Tests
 {
+    /// <summary>
+    /// API design tests for the AesGcmSiv cryptographic implementation.
+    /// </summary>
     public class ApiDesignTests
     {
+        /// <summary>
+        /// Tests that AesGcmSiv implements IDisposable interface.
+        /// </summary>
         [Fact]
         public void AesGcmSiv_ShouldImplementIDisposable()
         {
@@ -16,6 +22,9 @@ namespace AesGcmSiv.Tests
             Assert.IsAssignableFrom<IDisposable>(aesGcmSiv);
         }
 
+        /// <summary>
+        /// Tests that AesGcmSiv has the correct namespace.
+        /// </summary>
         [Fact]
         public void AesGcmSiv_ShouldHaveCorrectNamespace()
         {
@@ -29,6 +38,9 @@ namespace AesGcmSiv.Tests
             Assert.Equal("System.Security.Cryptography", aesGcmSiv.GetType().Namespace);
         }
 
+        /// <summary>
+        /// Tests that AesGcmSiv has the expected public methods.
+        /// </summary>
         [Fact]
         public void AesGcmSiv_ShouldHaveExpectedMethods()
         {
@@ -45,6 +57,9 @@ namespace AesGcmSiv.Tests
             Assert.Contains("Dispose", methodNames);
         }
 
+        /// <summary>
+        /// Tests that AesGcmSiv has the expected constructor.
+        /// </summary>
         [Fact]
         public void AesGcmSiv_ShouldHaveExpectedConstructor()
         {
@@ -56,6 +71,9 @@ namespace AesGcmSiv.Tests
             Assert.NotNull(aesGcmSiv);
         }
 
+        /// <summary>
+        /// Tests that AesGcmSiv has the expected constants.
+        /// </summary>
         [Fact]
         public void AesGcmSiv_ShouldHaveExpectedConstants()
         {
@@ -71,6 +89,9 @@ namespace AesGcmSiv.Tests
             Assert.NotNull(aesGcmSiv);
         }
 
+        /// <summary>
+        /// Tests that AesGcmSiv supports the using statement.
+        /// </summary>
         [Fact]
         public void AesGcmSiv_ShouldSupportUsingStatement()
         {
@@ -84,6 +105,9 @@ namespace AesGcmSiv.Tests
             }
         }
 
+        /// <summary>
+        /// Tests that AesGcmSiv is sealed.
+        /// </summary>
         [Fact]
         public void AesGcmSiv_ShouldBeSealed()
         {
@@ -95,6 +119,9 @@ namespace AesGcmSiv.Tests
             Assert.True(aesGcmSiv.GetType().IsSealed);
         }
 
+        /// <summary>
+        /// Tests that AesGcmSiv is public.
+        /// </summary>
         [Fact]
         public void AesGcmSiv_ShouldBePublic()
         {

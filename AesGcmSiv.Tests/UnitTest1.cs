@@ -3,6 +3,9 @@ using Xunit;
 
 namespace AesGcmSiv.Tests
 {
+    /// <summary>
+    /// Unit tests for the AesGcmSiv cryptographic implementation.
+    /// </summary>
     public class AesGcmSivTests
     {
         private readonly byte[] _testKey;
