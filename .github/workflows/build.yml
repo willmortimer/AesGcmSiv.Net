@@ -43,8 +43,20 @@ jobs:
         
     - name: Build Native Library
       run: |
-        $env:OPENSSL_ROOT_DIR = "C:\Program Files\OpenSSL-Win64"
-        .\Build\build_native.bat
+        # Use Developer Command Prompt to build native library
+        Write-Host "Building native library with Developer Command Prompt..."
+        
+        # Set OpenSSL path
+        $env:OPENSSL_ROOT_DIR = "$PWD\OpenSSL-Win64"
+        Write-Host "OpenSSL path: $env:OPENSSL_ROOT_DIR"
+        
+        # Run the build script using Developer Command Prompt
+        cmd /c "`"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat`" && cd /d `"$PWD`" && .\Build\build_native.bat"
+        
+        if ($LASTEXITCODE -ne 0) {
+          Write-Error "Native library build failed"
+          exit 1
+        }
         
     - name: Build .NET Projects
       run: |
