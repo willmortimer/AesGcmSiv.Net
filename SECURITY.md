@@ -12,7 +12,7 @@ If you discover a security vulnerability in this project, please report it to us
 
 **Please do NOT report security vulnerabilities through public GitHub issues.**
 
-Instead, please report them via email to: security@yourdomain.com
+Instead, please report them via email to: 181305488+willmortimer@users.noreply.github.com
 
 ### What to include in your report:
 

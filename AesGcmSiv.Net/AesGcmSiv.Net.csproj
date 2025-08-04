@@ -12,8 +12,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>cryptography;encryption;aes;gcm;siv;security</PackageTags>
-    <PackageProjectUrl>https://github.com/yourusername/AesGcmSiv.Net</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/yourusername/AesGcmSiv.Net</RepositoryUrl>
+            <PackageProjectUrl>https://github.com/willmortimer/AesGcmSiv.Net</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/willmortimer/AesGcmSiv.Net</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <!-- Icon removed for now - can be added later -->
     <PackageIconUrl></PackageIconUrl>
