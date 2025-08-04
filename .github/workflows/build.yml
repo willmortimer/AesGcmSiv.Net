@@ -106,7 +106,18 @@ jobs:
         
     - name: Build NuGet Package
       run: |
+        Write-Host "Building NuGet packages..."
         dotnet pack --configuration Release --no-build --output ./nupkgs --include-symbols
+        
+        Write-Host "Checking for created packages..."
+        if (Test-Path "nupkgs") {
+          Write-Host "nupkgs directory exists"
+          Get-ChildItem "nupkgs" -Force | ForEach-Object {
+            Write-Host "Found file: $($_.Name) ($($_.Length) bytes)"
+          }
+        } else {
+          Write-Host "nupkgs directory does not exist"
+        }
         
 
         
