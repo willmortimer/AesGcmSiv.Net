@@ -50,8 +50,39 @@ jobs:
         $env:OPENSSL_ROOT_DIR = "$PWD\OpenSSL-Win64"
         Write-Host "OpenSSL path: $env:OPENSSL_ROOT_DIR"
         
+        # Find Visual Studio installation and vcvars64.bat
+        Write-Host "Looking for Visual Studio installations..."
+        $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
+        Write-Host "Visual Studio found at: $vsPath"
+        
+        # Try different possible paths for vcvars64.bat
+        $vcvarsPaths = @(
+          "$vsPath\VC\Auxiliary\Build\vcvars64.bat",
+          "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat",
+          "C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat",
+          "C:\Program Files (x86)\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build\vcvars64.bat",
+          "C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        )
+        
+        $vcvarsPath = $null
+        foreach ($path in $vcvarsPaths) {
+          if (Test-Path $path) {
+            $vcvarsPath = $path
+            Write-Host "Found vcvars64.bat at: $vcvarsPath"
+            break
+          }
+        }
+        
+        if (-not $vcvarsPath) {
+          Write-Error "vcvars64.bat not found in any expected location"
+          Write-Host "Available Visual Studio installations:"
+          & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -all -property installationPath
+          exit 1
+        }
+        
         # Run the build script using Developer Command Prompt
-        cmd /c "`"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat`" && cd /d `"$PWD`" && .\Build\build_native.bat"
+        Write-Host "Running build with: $vcvarsPath"
+        cmd /c "`"$vcvarsPath`" && cd /d `"$PWD`" && .\Build\build_native.bat"
         
         if ($LASTEXITCODE -ne 0) {
           Write-Error "Native library build failed"
