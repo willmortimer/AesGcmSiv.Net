@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using Xunit;
 
 namespace AesGcmSiv.Tests
@@ -77,7 +77,7 @@ namespace AesGcmSiv.Tests
             var tag = new byte[16];
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => 
+            Assert.Throws<ArgumentNullException>(() =>
                 aesGcmSiv.Encrypt(null!, _testPlaintext, ciphertext, tag));
         }
 
@@ -93,7 +93,7 @@ namespace AesGcmSiv.Tests
             var tag = new byte[16];
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => 
+            Assert.Throws<ArgumentException>(() =>
                 aesGcmSiv.Encrypt(invalidNonce, _testPlaintext, ciphertext, tag));
         }
 
@@ -106,7 +106,7 @@ namespace AesGcmSiv.Tests
             var tag = new byte[16];
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => 
+            Assert.Throws<ArgumentException>(() =>
                 aesGcmSiv.Encrypt(_testNonce, _testPlaintext, smallCiphertext, tag));
         }
 
@@ -119,7 +119,7 @@ namespace AesGcmSiv.Tests
             var smallTag = new byte[15]; // Too small
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => 
+            Assert.Throws<ArgumentException>(() =>
                 aesGcmSiv.Encrypt(_testNonce, _testPlaintext, ciphertext, smallTag));
         }
 
@@ -158,7 +158,7 @@ namespace AesGcmSiv.Tests
             tag[0] ^= 1;
 
             // Act & Assert
-            Assert.Throws<CryptographicException>(() => 
+            Assert.Throws<CryptographicException>(() =>
                 aesGcmSiv.Decrypt(_testNonce, ciphertext, tag, decryptedPlaintext, _testAssociatedData));
         }
 
@@ -177,7 +177,7 @@ namespace AesGcmSiv.Tests
             aesGcmSiv.Encrypt(_testNonce, _testPlaintext, ciphertext, tag, _testAssociatedData);
 
             // Act & Assert
-            Assert.Throws<CryptographicException>(() => 
+            Assert.Throws<CryptographicException>(() =>
                 aesGcmSiv.Decrypt(wrongNonce, ciphertext, tag, decryptedPlaintext, _testAssociatedData));
         }
 
@@ -228,7 +228,7 @@ namespace AesGcmSiv.Tests
             aesGcmSiv.Dispose();
 
             // Assert
-            Assert.Throws<ObjectDisposedException>(() => 
+            Assert.Throws<ObjectDisposedException>(() =>
                 aesGcmSiv.Encrypt(_testNonce, _testPlaintext, new byte[_testPlaintext.Length], new byte[16]));
         }
 
@@ -240,7 +240,7 @@ namespace AesGcmSiv.Tests
             aesGcmSiv.Dispose();
 
             // Act & Assert
-            Assert.Throws<ObjectDisposedException>(() => 
+            Assert.Throws<ObjectDisposedException>(() =>
                 aesGcmSiv.Encrypt(_testNonce, _testPlaintext, new byte[_testPlaintext.Length], new byte[16]));
         }
 
@@ -252,7 +252,7 @@ namespace AesGcmSiv.Tests
             aesGcmSiv.Dispose();
 
             // Act & Assert
-            Assert.Throws<ObjectDisposedException>(() => 
+            Assert.Throws<ObjectDisposedException>(() =>
                 aesGcmSiv.Decrypt(_testNonce, new byte[64], new byte[16], new byte[64]));
         }
 

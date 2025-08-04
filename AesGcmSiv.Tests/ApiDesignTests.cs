@@ -10,7 +10,7 @@ namespace AesGcmSiv.Tests
         {
             // Arrange
             var key = new byte[32];
-            
+
             // Act & Assert
             using var aesGcmSiv = new System.Security.Cryptography.AesGcmSiv(key);
             Assert.IsAssignableFrom<IDisposable>(aesGcmSiv);
@@ -21,10 +21,10 @@ namespace AesGcmSiv.Tests
         {
             // Arrange
             var key = new byte[32];
-            
+
             // Act
             using var aesGcmSiv = new System.Security.Cryptography.AesGcmSiv(key);
-            
+
             // Assert
             Assert.Equal("System.Security.Cryptography", aesGcmSiv.GetType().Namespace);
         }
@@ -35,11 +35,11 @@ namespace AesGcmSiv.Tests
             // Arrange
             var key = new byte[32];
             using var aesGcmSiv = new System.Security.Cryptography.AesGcmSiv(key);
-            
+
             // Act & Assert
             var methods = aesGcmSiv.GetType().GetMethods();
             var methodNames = methods.Select(m => m.Name).ToArray();
-            
+
             Assert.Contains("Encrypt", methodNames);
             Assert.Contains("Decrypt", methodNames);
             Assert.Contains("Dispose", methodNames);
@@ -51,7 +51,7 @@ namespace AesGcmSiv.Tests
             // Arrange & Act
             var key = new byte[32];
             using var aesGcmSiv = new System.Security.Cryptography.AesGcmSiv(key);
-            
+
             // Assert
             Assert.NotNull(aesGcmSiv);
         }
@@ -61,11 +61,11 @@ namespace AesGcmSiv.Tests
         {
             // This test validates that our API design follows the expected patterns
             // from System.Security.Cryptography.AesGcm
-            
+
             // Arrange
             var key = new byte[32];
             using var aesGcmSiv = new System.Security.Cryptography.AesGcmSiv(key);
-            
+
             // Assert - These would be public constants in a real implementation
             // For now, we're just validating the API structure
             Assert.NotNull(aesGcmSiv);
@@ -76,7 +76,7 @@ namespace AesGcmSiv.Tests
         {
             // Arrange
             var key = new byte[32];
-            
+
             // Act & Assert - This should not throw
             using (var aesGcmSiv = new System.Security.Cryptography.AesGcmSiv(key))
             {
@@ -90,7 +90,7 @@ namespace AesGcmSiv.Tests
             // Arrange
             var key = new byte[32];
             using var aesGcmSiv = new System.Security.Cryptography.AesGcmSiv(key);
-            
+
             // Assert
             Assert.True(aesGcmSiv.GetType().IsSealed);
         }
@@ -101,9 +101,9 @@ namespace AesGcmSiv.Tests
             // Arrange
             var key = new byte[32];
             using var aesGcmSiv = new System.Security.Cryptography.AesGcmSiv(key);
-            
+
             // Assert
             Assert.True(aesGcmSiv.GetType().IsPublic);
         }
     }
-} 
+}
