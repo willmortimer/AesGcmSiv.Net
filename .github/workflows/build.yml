@@ -209,4 +209,13 @@ jobs:
         
     - name: Publish to NuGet
       run: |
-        dotnet nuget push "nupkgs/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json 
+        # Get all .nupkg files in the nupkgs directory
+        $nupkgFiles = Get-ChildItem "nupkgs" -Filter "*.nupkg"
+        Write-Host "Found $($nupkgFiles.Count) .nupkg files to publish:"
+        $nupkgFiles | ForEach-Object { Write-Host "  $($_.Name)" }
+        
+        # Push each .nupkg file
+        foreach ($file in $nupkgFiles) {
+          Write-Host "Publishing $($file.Name)..."
+          dotnet nuget push $file.FullName --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        } 
