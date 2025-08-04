@@ -30,13 +30,16 @@ jobs:
     - name: Setup Visual Studio Build Tools
       uses: microsoft/setup-msbuild@v1.3
       
-    - name: Download OpenSSL
+    - name: Setup OpenSSL from Repository
       run: |
-        $opensslUrl = "https://slproweb.com/download/Win64OpenSSL-3.2.0.exe"
-        $opensslInstaller = "OpenSSL-Installer.exe"
-        Invoke-WebRequest -Uri $opensslUrl -OutFile $opensslInstaller
-        Start-Process -FilePath $opensslInstaller -ArgumentList "/S" -Wait
-        Remove-Item $opensslInstaller
+        # Use OpenSSL files already included in the repository
+        Write-Host "Using OpenSSL files from repository..."
+        if (Test-Path "OpenSSL-Win64") {
+          Write-Host "OpenSSL-Win64 directory found in repository"
+        } else {
+          Write-Error "OpenSSL-Win64 directory not found in repository"
+          exit 1
+        }
         
     - name: Build Native Library
       run: |
