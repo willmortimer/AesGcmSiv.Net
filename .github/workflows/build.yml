@@ -13,7 +13,6 @@ permissions:
 env:
   DOTNET_VERSION: '9.0.x'
   OPENSSL_VERSION: '3.2.0'
-  OPENSSL_ROOT_DIR: ${{ github.workspace }}/OpenSSL-Win64
 
 jobs:
   build-windows:
@@ -38,7 +37,8 @@ jobs:
         if (Test-Path "OpenSSL-Win64") {
           Write-Host "OpenSSL-Win64 directory found in repository"
           
-          # Add OpenSSL to PATH for runtime
+          # Set OpenSSL environment variables
+          $env:OPENSSL_ROOT_DIR = "$PWD\OpenSSL-Win64"
           $env:PATH = "$PWD\OpenSSL-Win64;$env:PATH"
           
           Write-Host "OpenSSL_ROOT_DIR set to: $env:OPENSSL_ROOT_DIR"
