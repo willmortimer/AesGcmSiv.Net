@@ -19,6 +19,8 @@ OpenSSL-Win64/*
 !OpenSSL-Win64/lib/VC/x64/
 !OpenSSL-Win64/lib/VC/x64/MD/
 !OpenSSL-Win64/lib/VC/x64/MD/libcrypto.lib
+!OpenSSL-Win64/libcrypto-3-x64.dll
+!OpenSSL-Win64/libssl-3-x64.dll
 
 # Visual Studio
 .vs/

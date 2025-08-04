@@ -106,10 +106,9 @@ jobs:
             Copy-Item "bin\native\win-x64\aesgcmsiv.dll" $dir -Force
             Write-Host "Copied aesgcmsiv.dll to: $dir"
             
-            # Copy OpenSSL DLLs for runtime using absolute paths
-            $opensslPath = "$PWD\OpenSSL-Win64"
-            Copy-Item "$opensslPath\libcrypto-3-x64.dll" $dir -Force
-            Copy-Item "$opensslPath\libssl-3-x64.dll" $dir -Force
+            # Copy OpenSSL DLLs for runtime
+            Copy-Item "OpenSSL-Win64\libcrypto-3-x64.dll" $dir -Force
+            Copy-Item "OpenSSL-Win64\libssl-3-x64.dll" $dir -Force
             Write-Host "Copied OpenSSL DLLs to: $dir"
           } else {
             Write-Host "Test directory not found: $dir"
